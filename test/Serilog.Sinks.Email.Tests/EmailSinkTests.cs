@@ -41,7 +41,7 @@ public class EmailSinkTests
         Assert.Equal(Enumerable.Empty<string>(), selfLogMessages);
     }
 
-    [Fact]
+    [Fact(Skip = "Requires to fill the prameters")]
     public void WorkOAuth2()
     {
         var selfLogMessages = new List<string>();
