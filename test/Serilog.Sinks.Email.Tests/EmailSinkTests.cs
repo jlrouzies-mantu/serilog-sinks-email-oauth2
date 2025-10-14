@@ -32,7 +32,13 @@ public class EmailSinkTests
                        to: "to@localhost.local",
                        host: "localhost",
                        body: "[{Level}] {Message}{NewLine}{Exception}",
-                       subject: "subject")
+                       subject: "subject",
+                       smtpAuthenticationMode: SmtpAuthenticationMode.OAuth2,
+                       applicationId: "",
+                       secretWindowsStoreCertificateThumbprint: "",
+                       oauthTokenUsername: "",
+                       oauthTokenUrl: "",
+                       oauthScope: "")
                    .CreateLogger())
         {
             emailLogger.Information("test {test}", "test");

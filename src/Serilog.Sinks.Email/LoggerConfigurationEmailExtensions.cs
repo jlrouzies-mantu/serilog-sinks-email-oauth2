@@ -53,6 +53,13 @@ public static class LoggerConfigurationEmailExtensions
     /// <param name="restrictedToMinimumLevel">The minimum level for
     /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
     /// <param name="levelSwitch">A switch allowing the pass-through minimum level
+    /// <param name="smtpAuthenticationMode"/>
+    /// <param name="oauthTokenUrl"/>
+    /// <param name="applicationId"/>
+    /// <param name="oauthScope"/>   ///
+    /// <param name="oauthTokenUsername"/>
+    /// <param name="secretWindowsStoreCertificateThumbprint"/>
+    /// <param name="secretId"/>
     /// to be changed at runtime.</param>
     /// <returns>
     /// Logger configuration, allowing configuration to continue.
@@ -64,6 +71,13 @@ public static class LoggerConfigurationEmailExtensions
         string to,
         string host,
         int port = EmailSinkOptions.DefaultPort,
+        SmtpAuthenticationMode smtpAuthenticationMode = SmtpAuthenticationMode.None,
+        string? oauthTokenUrl = null,
+        string? oauthScope = null,
+        string? oauthTokenUsername = null,
+        string? applicationId = null,
+        string? secretId = null,
+        string? secretWindowsStoreCertificateThumbprint = null,
         SecureSocketOptions connectionSecurity = EmailSinkOptions.DefaultConnectionSecurity,
         ICredentialsByHost? credentials = null,
         string? subject = null,
@@ -77,6 +91,25 @@ public static class LoggerConfigurationEmailExtensions
         if (to == null) throw new ArgumentNullException(nameof(to));
         if (host == null) throw new ArgumentNullException(nameof(host));
 
+        if (smtpAuthenticationMode == SmtpAuthenticationMode.OAuth2)
+        {
+            if (string.IsNullOrWhiteSpace(oauthTokenUrl))
+                throw new ArgumentNullException(nameof(oauthTokenUrl), "OAuthTokenUrl must be provided when using OAuth2 authentication.");
+            if (string.IsNullOrWhiteSpace(oauthScope))
+                throw new ArgumentNullException(nameof(oauthScope), "OAuthScope must be provided when using OAuth2 authentication.");
+            if (string.IsNullOrWhiteSpace(oauthTokenUsername))
+                throw new ArgumentNullException(nameof(oauthTokenUsername), "OAuthTokenUsername must be provided when using OAuth2 authentication.");
+            if (string.IsNullOrWhiteSpace(applicationId))
+                throw new ArgumentNullException(nameof(applicationId), "ApplicationId must be provided when using OAuth2 authentication.");
+            if (string.IsNullOrWhiteSpace(secretId) && string.IsNullOrWhiteSpace(secretWindowsStoreCertificateThumbprint))
+                throw new ArgumentException("Either SecretId or SecretWindowsStoreCertificateThumbprint must be provided when using OAuth2 authentication.");
+        }
+
+        if (credentials != null)
+        {
+            smtpAuthenticationMode = SmtpAuthenticationMode.Basic;
+        }
+
         var connectionInfo = new EmailSinkOptions
         {
             From = from,
@@ -86,6 +119,13 @@ public static class LoggerConfigurationEmailExtensions
             ConnectionSecurity = connectionSecurity,
             Credentials = credentials,
             IsBodyHtml = false, // `MessageTemplateTextFormatter` cannot emit valid HTML; the `EmailSinkOptions` overload must be used for this.
+            SmtpAuthenticationMode = smtpAuthenticationMode,
+            OAuthScope = oauthScope,
+            OAuthTokenUrl = oauthTokenUrl,
+            OAuthTokenUsername = oauthTokenUsername,
+            ApplicationId = applicationId,
+            SecretWindowsStoreCertificateThumbprint = secretWindowsStoreCertificateThumbprint,
+            SecretId = secretId,
         };
 
         if (subject != null)
