@@ -4,9 +4,9 @@ Sends log events by SMTP email.
 
 > ℹ️ Version 3.x of this package changes the name and structure of many configuration parameters from their 2.x names; see below for detailed information.
 
-> ✅ Version 3.x now includes optional OAuth2 (Modern Authentication) support for SMTP using Azure AD / Office 365 or any OAuth2-compliant provider. See the new OAuth2 section below.
+> ✅ Now includes optional OAuth2 (Modern Authentication) support for SMTP using Azure AD / Office 365 or any OAuth2-compliant provider. See the new OAuth2 section below.
 
-**Package Id:** [Serilog.Sinks.Email](http://nuget.org/packages/serilog.sinks.email)
+**Package Id:** [Serilog.Sinks.EmailOauth2](http://nuget.org/packages/serilog.sinks.emailoauth2)
 
 ```csharp
 await using var log = new LoggerConfiguration()

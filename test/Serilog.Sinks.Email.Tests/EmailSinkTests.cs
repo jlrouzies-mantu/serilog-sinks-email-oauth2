@@ -32,13 +32,35 @@ public class EmailSinkTests
                        to: "to@localhost.local",
                        host: "localhost",
                        body: "[{Level}] {Message}{NewLine}{Exception}",
+                       subject: "subject")
+                   .CreateLogger())
+        {
+            emailLogger.Information("test {test}", "test");
+        }
+
+        Assert.Equal(Enumerable.Empty<string>(), selfLogMessages);
+    }
+
+    [Fact]
+    public void WorkOAuth2()
+    {
+        var selfLogMessages = new List<string>();
+        SelfLog.Enable(selfLogMessages.Add);
+
+        using (var emailLogger = new LoggerConfiguration()
+                   .WriteTo.Email(
+                       from: "",
+                       to: "",
+                       host: "smtp.office365.com",
+                       body: "[{Level}] {Message}{NewLine}{Exception}",
                        subject: "subject",
                        smtpAuthenticationMode: SmtpAuthenticationMode.OAuth2,
                        applicationId: "",
                        secretWindowsStoreCertificateThumbprint: "",
                        oauthTokenUsername: "",
                        oauthTokenUrl: "",
-                       oauthScope: "")
+                       oauthScope: "",
+                       connectionSecurity: MailKit.Security.SecureSocketOptions.StartTls)
                    .CreateLogger())
         {
             emailLogger.Information("test {test}", "test");
