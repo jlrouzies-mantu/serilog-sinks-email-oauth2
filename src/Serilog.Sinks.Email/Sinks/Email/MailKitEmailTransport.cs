@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MailKit.Net.Smtp;
-using MimeKit;
 
 namespace Serilog.Sinks.Email;
 
@@ -50,12 +51,47 @@ class MailKitEmailTransport(EmailSinkOptions options) : IEmailTransport
 
         smtpClient.Connect(options.Host, options.Port, options.ConnectionSecurity);
 
-        if (options.Credentials != null)
+        if (options.SmtpAuthenticationMode == SmtpAuthenticationMode.OAuth2)
         {
-            smtpClient.Authenticate(
-                Encoding.UTF8,
-                options.Credentials.GetCredential(
-                    options.Host, options.Port, "smtp"));
+            if (options.OAuthScope == null) throw new InvalidOperationException("OAuthScope must be set when using OAuth2 authentication.");
+            if (options.OAuthTokenUrl == null) throw new InvalidOperationException("OAuthTokenUrl must be set when using OAuth2 authentication.");
+            if (options.OAuthTokenUsername == null) throw new InvalidOperationException("OAuthTokenUsername must be set when using OAuth2 authentication.");
+            if (options.ApplicationId == null) throw new InvalidOperationException("ApplicationId must be set when using OAuth2 authentication.");
+            if (options.SecretId == null && options.SecretWindowsStoreCertificateThumbprint == null)
+                throw new InvalidOperationException("Either SecretId or SecretWindowsStoreCertificateThumbprint must be set when using OAuth2 authentication.");
+
+            string token = "";
+
+            if (!String.IsNullOrEmpty(options.SecretId))
+            {
+                token = OAuth2.TokenHelper.GetAccessToken(
+                    options.OAuthTokenUrl,
+                    options.OAuthScope,
+                    options.ApplicationId,
+                    options.SecretId!);
+            }
+
+            if (!String.IsNullOrEmpty(options.SecretWindowsStoreCertificateThumbprint))
+            {
+                token = OAuth2.TokenHelper.GetAccessTokenWithWindowsMachineCertificate(
+                    options.OAuthTokenUrl,
+                    options.OAuthScope,
+                    options.ApplicationId,
+                    options.SecretWindowsStoreCertificateThumbprint!);
+            }
+
+            var oauth2 = new SaslMechanismOAuth2(options.OAuthTokenUsername, token);
+            smtpClient.Authenticate(oauth2);
+        }
+        else if (options.SmtpAuthenticationMode == SmtpAuthenticationMode.Basic || options.SmtpAuthenticationMode == SmtpAuthenticationMode.None)
+        {
+            if (options.Credentials != null)
+            {
+                smtpClient.Authenticate(
+                    Encoding.UTF8,
+                    options.Credentials.GetCredential(
+                        options.Host, options.Port, "smtp"));
+            }
         }
         return smtpClient;
     }
