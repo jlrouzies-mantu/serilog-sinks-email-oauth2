@@ -41,7 +41,7 @@ public class EmailSinkTests
         Assert.Equal(Enumerable.Empty<string>(), selfLogMessages);
     }
 
-    [Fact(Skip = "Requires to fill the prameters")]
+    [Fact]
     public void WorkOAuth2()
     {
         var selfLogMessages = new List<string>();
@@ -49,17 +49,18 @@ public class EmailSinkTests
 
         using (var emailLogger = new LoggerConfiguration()
                    .WriteTo.Email(
-                       from: "",
-                       to: "",
+                       from: "BraveGuava89@amatest.net",
+                       to: "jrouzies@mantu.com",
                        host: "smtp.office365.com",
                        body: "[{Level}] {Message}{NewLine}{Exception}",
                        subject: "subject",
+                       port: 587,
                        smtpAuthenticationMode: SmtpAuthenticationMode.OAuth2,
-                       applicationId: "",
-                       secretWindowsStoreCertificateThumbprint: "",
-                       oauthTokenUsername: "",
-                       oauthTokenUrl: "",
-                       oauthScope: "",
+                       applicationId: "7c3169da-ee78-4431-b163-fa9517f19708",
+                       secretWindowsStoreCertificateThumbprint: "902125818B838F85A8DC817C09363C683AE39443",
+                       oauthTokenUsername: "BraveGuava89@amatest.net",
+                       oauthTokenUrl: "https://login.microsoftonline.com/d8597321-b69b-480b-b24c-f8bdcb11e023/oauth2/v2.0/token",
+                       oauthScope: "https://outlook.office365.com/.default",
                        connectionSecurity: MailKit.Security.SecureSocketOptions.StartTls)
                    .CreateLogger())
         {

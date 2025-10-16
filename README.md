@@ -197,7 +197,8 @@ If you configure Serilog via JSON:
       {
         "Name": "Email",
         "Args": {
-          "options": {
+            "Subject": "Subject",
+            "Body": "{Timestamp} [{Level}] {Message}{NewLine}{Exception}",
             "From": "app@contoso.com",
             "To": "support@contoso.com",
             "Host": "smtp.office365.com",
@@ -209,7 +210,6 @@ If you configure Serilog via JSON:
             "OAuthTokenUrl": "https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token",
             "OAuthScope": "https://outlook.office365.com/.default",
             "OAuthTokenUsername": "app@contoso.com"
-          }
         }
       }
     ]
