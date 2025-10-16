@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Send Serilog events as SMTP email using MailKit.</Description>
+    <Description>Send Serilog events as SMTP email using MailKit and with OAuth2 support.</Description>
     <Authors>Serilog Contributors</Authors>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT'">net462;net471</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);netstandard2.0;net6.0;net8.0;net9.0</TargetFrameworks>
-    <PackageTags>serilog;smtp;mailkit</PackageTags>
+    <PackageTags>serilog;smtp;mailkit;oauth2</PackageTags>
     <PackageIcon>serilog-sink-nuget.png</PackageIcon>
     <PackageProjectUrl>https://serilog.net/</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -13,12 +13,14 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RootNamespace>Serilog</RootNamespace>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+    <PackageId>Serilog.Sinks.EmailOauth2</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="../../serilog-sink-nuget.png" Pack="true" Visible="false" PackagePath="/" />
     <None Include="../../README.md" Pack="true" Visible="false" PackagePath="/" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="All" />
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="MailKit" Version="4.11.0" />

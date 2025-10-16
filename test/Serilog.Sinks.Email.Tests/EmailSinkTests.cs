@@ -41,6 +41,34 @@ public class EmailSinkTests
         Assert.Equal(Enumerable.Empty<string>(), selfLogMessages);
     }
 
+    [Fact(Skip = "Requires to fill the prameters")]
+    public void WorkOAuth2()
+    {
+        var selfLogMessages = new List<string>();
+        SelfLog.Enable(selfLogMessages.Add);
+
+        using (var emailLogger = new LoggerConfiguration()
+                   .WriteTo.Email(
+                       from: "",
+                       to: "",
+                       host: "smtp.office365.com",
+                       body: "[{Level}] {Message}{NewLine}{Exception}",
+                       subject: "subject",
+                       smtpAuthenticationMode: SmtpAuthenticationMode.OAuth2,
+                       applicationId: "",
+                       secretWindowsStoreCertificateThumbprint: "",
+                       oauthTokenUsername: "",
+                       oauthTokenUrl: "",
+                       oauthScope: "",
+                       connectionSecurity: MailKit.Security.SecureSocketOptions.StartTls)
+                   .CreateLogger())
+        {
+            emailLogger.Information("test {test}", "test");
+        }
+
+        Assert.Equal(Enumerable.Empty<string>(), selfLogMessages);
+    }
+
     [Fact(Skip = "Requires a smtp mail server")]
     public void WorksMultipleEventsInOneMail()
     {

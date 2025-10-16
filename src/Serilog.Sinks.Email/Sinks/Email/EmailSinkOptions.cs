@@ -97,4 +97,44 @@ public sealed class EmailSinkOptions
     /// Provides a method that validates server certificates.
     /// </summary>
     public System.Net.Security.RemoteCertificateValidationCallback? ServerCertificateValidationCallback { get; set; }
+
+    /// <summary>
+    /// Defines which Smtp Authentication to use.
+    /// </summary>
+    public SmtpAuthenticationMode SmtpAuthenticationMode { get; set; }
+
+    /// <summary>
+    /// The Application (client) ID used for OAuth2 authentication.
+    /// </summary>
+    public string? ApplicationId { get; set; } = null;
+
+    /// <summary>
+    /// The Secret ID used for OAuth2 authentication.
+    /// </summary>
+    public string? SecretId { get; set; } = null;
+
+    /// <summary>
+    /// The url to request tokens from the OAuth2 provider.
+    /// E.g. https://login.microsoftonline.com/TENANTID/oauth2/v2.0/token for Azure
+    /// </summary>
+    public string? OAuthTokenUrl { get; set; } = null;
+
+    /// <summary>
+    /// The scope for the OAuth2 token.
+    /// E.g https://outlook.office365.com/.default for Office365
+    /// </summary>
+    public string? OAuthScope { get; set; } = null;
+
+    /// <summary>
+    /// The certificate thumbprint to use from the Windows Certificate Store for OAuth2 authentication.
+    /// </summary>
+    public string? SecretWindowsStoreCertificateThumbprint { get; set; } = null;
+
+    /// <summary>
+    /// The username associated with the OAuth2 token.
+    /// </summary>
+    public string? OAuthTokenUsername { get; set; } = null;
+
 }
+
+
