@@ -45,6 +45,7 @@ public static class LoggerConfigurationEmailExtensions
     /// is supplied by MailKit; see <see cref="SecureSocketOptions"/> for supported values. The default is
     /// <see cref="SecureSocketOptions.Auto"/>.</param>
     /// <param name="credentials">The network credentials to use to authenticate with mailServer</param>
+    /// <param name="isBodyHtml">Define if body is HTML</param>
     /// <param name="body">A message template describing the format used to write to the sink.
     /// the default is "{Timestamp} [{Level}] {Message}{NewLine}{Exception}".</param>
     /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
@@ -71,6 +72,7 @@ public static class LoggerConfigurationEmailExtensions
         string to,
         string host,
         int port = EmailSinkOptions.DefaultPort,
+        bool isBodyHtml = false,
         SmtpAuthenticationMode smtpAuthenticationMode = SmtpAuthenticationMode.None,
         string? oauthTokenUrl = null,
         string? oauthScope = null,
@@ -118,7 +120,7 @@ public static class LoggerConfigurationEmailExtensions
             Port = port,
             ConnectionSecurity = connectionSecurity,
             Credentials = credentials,
-            IsBodyHtml = false, // `MessageTemplateTextFormatter` cannot emit valid HTML; the `EmailSinkOptions` overload must be used for this.
+            IsBodyHtml = isBodyHtml,
             SmtpAuthenticationMode = smtpAuthenticationMode,
             OAuthScope = oauthScope,
             OAuthTokenUrl = oauthTokenUrl,
