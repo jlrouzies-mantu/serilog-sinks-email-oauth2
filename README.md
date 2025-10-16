@@ -1,4 +1,4 @@
-# Serilog.Sinks.Email&nbsp;[![Build status](https://github.com/serilog/serilog-sinks-email/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/serilog/serilog-sinks-email/actions)&nbsp;[![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.Email.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.Email/)
+# Serilog.Sinks.EmailOauth2&nbsp;[![Build status](https://github.com/serilog/serilog-sinks-email/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/serilog/serilog-sinks-email/actions)&nbsp;[![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.Email.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.Email/)
 
 Sends log events by SMTP email.
 
