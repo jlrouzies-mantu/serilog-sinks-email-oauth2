@@ -23,8 +23,8 @@ jobs:
             exit 1
           fi
 
-      - run: dotnet restore src\Serilog.Sinks.Email\Serilog.Sinks.Email.csproj
-      - run: dotnet build --configuration Release --no-restore src\Serilog.Sinks.Email\Serilog.Sinks.Email.csproj
-      - run: dotnet pack --configuration Release --no-build --output ./nupkg src\Serilog.Sinks.Email\Serilog.Sinks.Email.csproj
+      - run: dotnet restore src/Serilog.Sinks.Email/Serilog.Sinks.Email.csproj
+      - run: dotnet build --configuration Release --no-restore src/Serilog.Sinks.Email/Serilog.Sinks.Email.csproj
+      - run: dotnet pack --configuration Release --no-build --output ./nupkg src/Serilog.Sinks.Email/Serilog.Sinks.Email.csproj
       - name: Push
         run: dotnet nuget push "./nupkg/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
